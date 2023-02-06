@@ -2,7 +2,7 @@
 name = "training-trail-utils"
 version = "0.1.0"
 description = "Basic utilities for view datas of trail training"
-authors = ["PhilFiftyEight"]
+authors = ["PhilFiftyEight "]
 readme = "README.md"
 packages = [{include = "training_trail_utils", from = "src"}]
 license = "MIT"
