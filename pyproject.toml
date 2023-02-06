@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "training-trail-utils"
+version = "0.1.0"
+description = "Basic utilities for view datas of trail training"
+authors = ["PhilFiftyEight"]
+readme = "README.md"
+packages = [{include = "training_trail_utils", from = "src"}]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.tests.dependencies]
+pytest = "^7.2.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.9.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
