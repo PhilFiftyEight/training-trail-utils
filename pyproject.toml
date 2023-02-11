@@ -28,7 +28,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
 minversion = "7.2.1"
-addopts = "-v --cov"
+addopts = "-vv -rAl -s --cov" # vv -> up verbosity, s -> no capture (for use print), l -> show local variables (shortcut), rA -> show summary report, cov -> coverage
 testpaths = [
     "tests",
 ]
