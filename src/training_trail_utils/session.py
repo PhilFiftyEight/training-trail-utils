@@ -25,3 +25,51 @@ class Session:
         
         date = [ int(data) for data in datasList.pop(0).split('-')]
         self.date = pendulum.local(*date)
+        
+        duration = [ int(data) for data in datasList.pop(0).split(':')]
+        try:
+            hours, minutes, seconds = duration
+        except ValueError:
+            minutes, seconds = duration
+            hours = 0
+        self.duration = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours )
+        
+        vma = [ int(data) for data in datasList.pop(0).split(':')]
+        try:
+            hours, minutes, seconds = vma
+        except ValueError:
+            minutes, seconds = vma
+            hours = 0
+        self.vma = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours )
+
+        anaerobie = [ int(data) for data in datasList.pop(0).split(':')]
+        try:
+            hours, minutes, seconds = anaerobie
+        except ValueError:
+            minutes, seconds = anaerobie
+            hours = 0
+        self.anaerobie = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours )
+        
+        end_active = [ int(data) for data in datasList.pop(0).split(':')]
+        try:
+            hours, minutes, seconds = end_active
+        except ValueError:
+            minutes, seconds = end_active
+            hours = 0
+        self.end_active = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours )
+
+        end_fond = [ int(data) for data in datasList.pop(0).split(':')]
+        try:
+            hours, minutes, seconds = end_fond
+        except ValueError:
+            minutes, seconds = end_fond
+            hours = 0
+        self.end_fond = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours )
+
+        recup = [ int(data) for data in datasList.pop(0).split(':')]
+        try:
+            hours, minutes, seconds = recup
+        except ValueError:
+            minutes, seconds = recup
+            hours = 0
+        self.recup = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours )
