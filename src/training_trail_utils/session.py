@@ -20,5 +20,8 @@ class Session:
     recup: pendulum.Duration = field(default_factory=defaultduration)
 
     def __post_init__(self):
-        date = [ int(data) for data in self.datas.split(' ')[0].split('-')]
+        # example of self.datas : "2022-2-10 51:54 08:46 27:16 03:31 06:31 05:45"
+        datasList = self.datas.split(' ')
+        
+        date = [ int(data) for data in datasList.pop(0).split('-')]
         self.date = pendulum.local(*date)
