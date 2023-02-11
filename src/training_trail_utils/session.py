@@ -23,7 +23,7 @@ class Session:
     recup: pendulum.Duration = field(default_factory=defaultduration)
 
     def __post_init__(self):
-        # example of self.datas : "2022-2-10 51:54 08:46 27:16 03:31 06:31 05:45"
+        # example of self.datas : "2022-2-10 01:51:54 08:46 27:16 03:31 01:06:31 05:45"
         def extract_datas():
             datasList = self.datas.split(" ")
             for datas in datasList:
@@ -44,9 +44,6 @@ class Session:
                 hours = 0
             return dict(zip(("hours", "minutes", "seconds"), (hours, minutes, seconds)))
 
-        self.duration = pendulum.duration(**make_params(next(datas)))
-        self.vma = pendulum.duration(**make_params(next(datas)))
-        self.anaerobie = pendulum.duration(**make_params(next(datas)))
-        self.end_active = pendulum.duration(**make_params(next(datas)))
-        self.end_fond = pendulum.duration(**make_params(next(datas)))
-        self.recup = pendulum.duration(**make_params(next(datas)))
+        for param in self.__dict__.keys():
+            if param != "datas" and param != "date":
+                self.__setattr__(param, pendulum.duration(**make_params(next(datas))))
