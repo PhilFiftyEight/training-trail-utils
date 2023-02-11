@@ -34,57 +34,19 @@ class Session:
 
         datas = extract_datas()
 
-        date = next(datas)
-        self.date = pendulum.local(*date)
+        self.date = pendulum.local(*next(datas))
 
-        duration = next(datas)
-        try:
-            hours, minutes, seconds = duration
-        except ValueError:
-            minutes, seconds = duration
-            hours = 0
-        self.duration = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours)
+        def make_params(datas):
+            try:
+                hours, minutes, seconds = datas
+            except ValueError:
+                minutes, seconds = datas
+                hours = 0
+            return dict(zip(("hours", "minutes", "seconds"), (hours, minutes, seconds)))
 
-        vma = next(datas)
-        try:
-            hours, minutes, seconds = vma
-        except ValueError:
-            minutes, seconds = vma
-            hours = 0
-        self.vma = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours)
-
-        anaerobie = next(datas)
-        try:
-            hours, minutes, seconds = anaerobie
-        except ValueError:
-            minutes, seconds = anaerobie
-            hours = 0
-        self.anaerobie = pendulum.duration(
-            seconds=seconds, minutes=minutes, hours=hours
-        )
-
-        end_active = next(datas)
-        try:
-            hours, minutes, seconds = end_active
-        except ValueError:
-            minutes, seconds = end_active
-            hours = 0
-        self.end_active = pendulum.duration(
-            seconds=seconds, minutes=minutes, hours=hours
-        )
-
-        end_fond = next(datas)
-        try:
-            hours, minutes, seconds = end_fond
-        except ValueError:
-            minutes, seconds = end_fond
-            hours = 0
-        self.end_fond = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours)
-
-        recup = next(datas)
-        try:
-            hours, minutes, seconds = recup
-        except ValueError:
-            minutes, seconds = recup
-            hours = 0
-        self.recup = pendulum.duration(seconds=seconds, minutes=minutes, hours=hours)
+        self.duration = pendulum.duration(**make_params(next(datas)))
+        self.vma = pendulum.duration(**make_params(next(datas)))
+        self.anaerobie = pendulum.duration(**make_params(next(datas)))
+        self.end_active = pendulum.duration(**make_params(next(datas)))
+        self.end_fond = pendulum.duration(**make_params(next(datas)))
+        self.recup = pendulum.duration(**make_params(next(datas)))
