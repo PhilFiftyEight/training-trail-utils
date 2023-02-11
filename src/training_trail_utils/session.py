@@ -18,3 +18,7 @@ class Session:
     end_active: pendulum.Duration = field(default_factory=defaultduration)
     end_fond: pendulum.Duration = field(default_factory=defaultduration)
     recup: pendulum.Duration = field(default_factory=defaultduration)
+
+    def __post_init__(self):
+        date = [ int(data) for data in self.datas.split(' ')[0].split('-')]
+        self.date = pendulum.local(*date)
