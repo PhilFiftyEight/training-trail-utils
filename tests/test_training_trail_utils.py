@@ -3,6 +3,7 @@ import pytest
 import pendulum
 
 from src.training_trail_utils.session import Session
+from src.training_trail_utils.session import InvalidStringError
 
 
 def _fields():
@@ -54,3 +55,16 @@ def test_can_create_Session(fields):
 def test_post_init_dispatch_data_correctly(field, expected):
     s = Session("2022-2-10 01:51:54 08:46 27:16 03:31 01:06:31 05:45")
     assert getattr(s, field) == expected
+
+
+def test_incorrect_string_for_create_Session_raise_exception():
+    with pytest.raises(InvalidStringError):
+        s = Session(
+            "2022-2-10 51:54 08:46 27:16 03:31 01:01:06:31 05:45"
+        )  # 01:01:06:31
+    with pytest.raises(InvalidStringError):
+        s = Session("2022/2/10 51:54 08:46 27:16 03:31 01:06:31 05:45")  # 2022/2/10
+    with pytest.raises(InvalidStringError):
+        s = Session("2022-2-10 51:54 08:46 27:16 03:31 01:06:31")  # missing duration
+    with pytest.raises(InvalidStringError):
+        s = Session("")  # init string empty

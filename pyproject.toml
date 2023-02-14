@@ -11,10 +11,8 @@ license = "MIT"
 python = "^3.11"
 pendulum = "^2.1.2"
 
-
 [tool.poetry.group.tests.dependencies]
 pytest = "^7.2.1"
-
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.10.0"

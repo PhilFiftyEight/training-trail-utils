@@ -1,6 +1,10 @@
+import re
+import pendulum
 from dataclasses import dataclass, field
 
-import pendulum
+
+class InvalidStringError(Exception):
+    pass
 
 
 def defaultduration():
@@ -31,6 +35,12 @@ class Session:
                     int(data)
                     for data in (datas.split(":") if ":" in datas else datas.split("-"))
                 ]
+
+        datas_validation = re.compile(
+            r"^\d{4}-\d{1,2}-\d{1,2}(\s(\d{2})(:\d{2}){1,2}){6}$"
+        )
+        if not re.match(datas_validation, self.datas):
+            raise InvalidStringError
 
         datas = extract_datas()
 
