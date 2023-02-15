@@ -57,14 +57,23 @@ def test_post_init_dispatch_data_correctly(field, expected):
     assert getattr(s, field) == expected
 
 
-def test_incorrect_string_for_create_Session_raise_exception():
-    with pytest.raises(InvalidStringError):
-        s = Session(
-            "2022-2-10 51:54 08:46 27:16 03:31 01:01:06:31 05:45"
-        )  # 01:01:06:31
-    with pytest.raises(InvalidStringError):
-        s = Session("2022/2/10 51:54 08:46 27:16 03:31 01:06:31 05:45")  # 2022/2/10
-    with pytest.raises(InvalidStringError):
-        s = Session("2022-2-10 51:54 08:46 27:16 03:31 01:06:31")  # missing duration
-    with pytest.raises(InvalidStringError):
-        s = Session("")  # init string empty
+@pytest.mark.parametrize(
+    "datas_string",
+    [
+        # init string empty
+        "",
+        # 01:01:06:31 => more 3 tokens for duration
+        "2022-2-10 51:54 08:46 27:16 03:31 01:01:06:31 05:45",
+        # 00 => less 2 tokens for duration
+        "2022-2-10 51:54 08:46 27:16 03:31 31 05:45",
+        # 2022/2/10 => invalid separator
+        "2022/2/10 51:54 08:46 27:16 03:31 01:06:31 05:45",
+        # missing duration
+        "2022-2-10 51:54 08:46 27:16 03:31 01:06:31",
+        # missing date
+        "51:54 08:46 27:16 03:31 01:06:31 05:45",
+    ],
+)
+def test_incorrect_string_for_create_Session_raise_exception(datas_string):
+    with pytest.raises(InvalidStringError) as e:
+        s = Session(datas_string)
