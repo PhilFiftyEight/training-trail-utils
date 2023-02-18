@@ -72,12 +72,20 @@ def test_post_init_dispatch_data_correctly(field, expected):
             "2022-2-10 51:54 08:46 27:16 03:31 31 05:45",
             "InvalidStringError: less than 2 tokens for <31>",
         ),
-        # 2022/2/10 => invalid separator
+        # 2022/2/10 => invalid separator (date)
         (
-            "2022/2/10 51:54 08:46 27:16 03:31 01:06:31 05:45",
-            "InvalidStringError: invalid separator for date <2022/2/10>, format -> yyyy-mm-dd",
+            "2022/2/13 51:54 08:46 27:16 03:31 01:06:31 05:45",
+            "InvalidStringError: invalid separator for date <2022/2/13>, format -> yyyy-mm-dd",
         ),
-        # 03.31 => invalid separator
+        (
+            "2022-2/13 51:54 08:46 27:16 03:31 01:06:31 05:45",
+            "InvalidStringError: invalid separator for date <2022-2/13>, format -> yyyy-mm-dd",
+        ),
+        (
+            "2022/2-13 51:54 08:46 27:16 03:31 01:06:31 05:45",
+            "InvalidStringError: invalid separator for date <2022/2-13>, format -> yyyy-mm-dd",
+        ),
+        # 03.31 => invalid separator (duration)
         (
             "2022/2/10 51:54 08:46 27:16 03.31 01:06:31 05:45",
             "InvalidStringError: invalid separator for duration <03.31>, format -> Optionnal([0-9][0-9]:)[0-5][0-9]:[0-5][0-9]",

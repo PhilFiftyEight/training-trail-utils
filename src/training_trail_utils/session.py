@@ -2,14 +2,30 @@ import re
 import pendulum
 from dataclasses import dataclass, field
 
+rdate = re.compile(r"\d{4}.\d{1,2}.\d{1,2}")
+rdate_invalidseparator = re.compile(r"\d{4}[^-]\d{1,2}[^-]\d{1,2}")
+rdate_invalidseparator2 = re.compile(r"\d{4}-\d{1,2}[^-]\d{1,2}")
+rdate_invalidseparator3 = re.compile(r"\d{4}[^-]\d{1,2}-\d{1,2}")
+
 
 class InvalidStringError(Exception):
     def __init__(self, datas_string, *args):
         super().__init__(args)
-        self.datas_string = datas_string
-    
+        self.datas_string = re.split(" ", datas_string)
+        print(self.datas_string)
+
     def __str__(self):
-        return 'InvalidStringError: the datas_String is required for new Session'
+        if self.datas_string == [""]:
+            return "InvalidStringError: the datas_String is required for new Session"
+        elif not re.match(rdate, self.datas_string[0]):
+            return "InvalidStringError: date is required, format -> yyyy-mm-dd"
+        elif (
+            re.match(rdate_invalidseparator, self.datas_string[0])
+            or re.match(rdate_invalidseparator2, self.datas_string[0])
+            or re.match(rdate_invalidseparator3, self.datas_string[0])
+        ):
+            return f"InvalidStringError: invalid separator for date <{self.datas_string[0]}>, format -> yyyy-mm-dd"
+        return "InvalidStringError"
 
 
 def defaultduration():
@@ -22,7 +38,7 @@ def defaultdate():
 
 @dataclass
 class Session:
-    datas: str = ''
+    datas: str = ""
     date: pendulum.DateTime = field(default_factory=defaultdate)
     duration: pendulum.Duration = field(default_factory=defaultduration)
     vma: pendulum.Duration = field(default_factory=defaultduration)
