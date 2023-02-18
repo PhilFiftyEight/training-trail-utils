@@ -4,7 +4,12 @@ from dataclasses import dataclass, field
 
 
 class InvalidStringError(Exception):
-    pass
+    def __init__(self, datas_string, *args):
+        super().__init__(args)
+        self.datas_string = datas_string
+    
+    def __str__(self):
+        return 'InvalidStringError: the datas_String is required for new Session'
 
 
 def defaultduration():
@@ -17,7 +22,7 @@ def defaultdate():
 
 @dataclass
 class Session:
-    datas: str
+    datas: str = ''
     date: pendulum.DateTime = field(default_factory=defaultdate)
     duration: pendulum.Duration = field(default_factory=defaultduration)
     vma: pendulum.Duration = field(default_factory=defaultduration)
@@ -40,7 +45,7 @@ class Session:
             r"^\d{4}-\d{1,2}-\d{1,2}(\s(\d{2})(:\d{2}){1,2}){6}$"
         )
         if not re.match(datas_validation, self.datas):
-            raise InvalidStringError
+            raise InvalidStringError(self.datas)
 
         datas = extract_datas()
 
