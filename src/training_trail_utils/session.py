@@ -38,7 +38,7 @@ class InvalidStringError(Exception):
                 else:
                     return f"InvalidStringError: invalid separator for duration <{duration}>, format -> Optionnal([0-9][0-9]:)[0-5][0-9]:[0-5][0-9]"
             duration_count = len(dataswithoutdate)
-            if duration_count < 7:
+            if duration_count < 6 or duration_count > 6 :
                 return (
                     f"InvalidStringError: 6 durations are required not {duration_count}"
                 )

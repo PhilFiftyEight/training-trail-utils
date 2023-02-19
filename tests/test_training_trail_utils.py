@@ -95,6 +95,12 @@ def test_post_init_dispatch_data_correctly(field, expected):
             "2022-2-10 51:54 08:46 27:16 03:31 01:06:31",
             "InvalidStringError: 6 durations are required not 5",
         ),
+        # Too much duration
+        (
+            "2022-2-10 51:54 08:46 27:16 03:31 01:06:31 00:00 00:00",
+            "InvalidStringError: 6 durations are required not 7",
+            
+        ),
         # missing date
         (
             "51:54 08:46 27:16 03:31 01:06:31 05:45",
@@ -106,3 +112,5 @@ def test_incorrect_string_for_create_Session_raise_exception(datas_string, expec
     with pytest.raises(InvalidStringError) as e:
         s = Session(datas_string)
     assert str(e.value) == expected
+
+
