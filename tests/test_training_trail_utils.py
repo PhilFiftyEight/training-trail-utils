@@ -87,7 +87,7 @@ def test_post_init_dispatch_data_correctly(field, expected):
         ),
         # 03.31 => invalid separator (duration)
         (
-            "2022/2/10 51:54 08:46 27:16 03.31 01:06:31 05:45",
+            "2022-2-10 51:54 08:46 27:16 03.31 01:06:31 05:45",
             "InvalidStringError: invalid separator for duration <03.31>, format -> Optionnal([0-9][0-9]:)[0-5][0-9]:[0-5][0-9]",
         ),
         # missing duration

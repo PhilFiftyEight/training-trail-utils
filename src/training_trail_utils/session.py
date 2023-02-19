@@ -7,6 +7,8 @@ rdate_invalidseparator = re.compile(r"\d{4}[^-]\d{1,2}[^-]\d{1,2}")
 rdate_invalidseparator2 = re.compile(r"\d{4}-\d{1,2}[^-]\d{1,2}")
 rdate_invalidseparator3 = re.compile(r"\d{4}[^-]\d{1,2}-\d{1,2}")
 
+datas_validation = re.compile(r"^\d{4}-\d{1,2}-\d{1,2}(\s(\d{2})(:\d{2}){1,2}){6}$")
+
 
 class InvalidStringError(Exception):
     def __init__(self, datas_string, *args):
@@ -25,7 +27,22 @@ class InvalidStringError(Exception):
             or re.match(rdate_invalidseparator3, self.datas_string[0])
         ):
             return f"InvalidStringError: invalid separator for date <{self.datas_string[0]}>, format -> yyyy-mm-dd"
-        return "InvalidStringError"
+        else:
+            dataswithoutdate = self.datas_string[1:]
+            for duration in dataswithoutdate:
+                if ":" in duration or len(duration) < 3:
+                    numberoftokens = len(duration.split(":"))
+                    if numberoftokens < 2 or numberoftokens > 3:
+                        msg = "less than 2" if numberoftokens < 2 else "more than 3"
+                        return f"InvalidStringError: {msg} tokens for <{duration}>"
+                else:
+                    return f"InvalidStringError: invalid separator for duration <{duration}>, format -> Optionnal([0-9][0-9]:)[0-5][0-9]:[0-5][0-9]"
+            duration_count = len(dataswithoutdate)
+            if duration_count < 7:
+                return (
+                    f"InvalidStringError: 6 durations are required not {duration_count}"
+                )
+        return "InvalidStringError: Other reason, not tested"
 
 
 def defaultduration():
@@ -57,9 +74,6 @@ class Session:
                     for data in (datas.split(":") if ":" in datas else datas.split("-"))
                 ]
 
-        datas_validation = re.compile(
-            r"^\d{4}-\d{1,2}-\d{1,2}(\s(\d{2})(:\d{2}){1,2}){6}$"
-        )
         if not re.match(datas_validation, self.datas):
             raise InvalidStringError(self.datas)
 
