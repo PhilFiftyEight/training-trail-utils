@@ -14,7 +14,6 @@ class InvalidStringError(Exception):
     def __init__(self, datas_string, *args):
         super().__init__(args)
         self.datas_string = re.split(" ", datas_string)
-        print(self.datas_string)
 
     def __str__(self):
         if self.datas_string == [""]:
